@@ -15,13 +15,13 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Run unit tests
+      - name: Build images
         run: |
+          docker build -t person-service:${GITHUB_SHA} .
           docker build -f tests/Dockerfile -t person-service-tests .
-          docker run --rm person-service-tests
 
-      - name: Build production image
-        run: docker build -t person-service:${GITHUB_SHA} .
+      - name: Run unit tests
+        run: docker run --rm person-service-tests
 
       - name: Deploy to Render
         id: deploy
